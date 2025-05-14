@@ -20,7 +20,7 @@ export default function Login() {
   const API_BASE = import.meta.env.DEV ? "http://localhost:5000" : "https://postpup-backend.onrender.com";
   const handleSubmit = async () => {
     try {
-      const res = await fetch(`${API_BASE}/api/login`), {
+	const res = await fetch(`${API_BASE}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
