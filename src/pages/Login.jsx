@@ -17,9 +17,10 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const toast = useToast();
 
+  const API_BASE = import.meta.env.DEV ? "http://localhost:5000" : "https://postpup-backend.onrender.com";
   const handleSubmit = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/login', {
+      const res = await fetch(`${API_BASE}/api/login`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
