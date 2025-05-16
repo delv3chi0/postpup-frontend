@@ -76,4 +76,4 @@ export default function Register() {
   );
 }
 
-export default Register;
+export default Register; // Only one default export at the end
