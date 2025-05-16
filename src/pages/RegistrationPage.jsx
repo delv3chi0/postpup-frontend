@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Box, Heading, Input, Button, Text } from '@chakra-ui/react';
 
-export default function Register() {
+export default function RegistrationPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -19,7 +19,10 @@ export default function Register() {
     }
 
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      const backendUrl = import.meta.env.DEV
+        ? 'http://localhost:5000'
+        : 'https://postpup-backend.onrender.com';
+
       const response = await fetch(`${backendUrl}/api/signup`, {
         method: 'POST',
         headers: {
@@ -70,9 +73,8 @@ export default function Register() {
         <Button colorScheme="blue" width="full" type="submit">Register</Button>
       </form>
       <Text mt={2} textAlign="center">
-        Already have an account? <Link color="blue.500" to="/login">Log in</Link>
+        Already have an account? <Link to="/login" style={{ color: '#3182ce' }}>Log in</Link>
       </Text>
     </Box>
   );
 }
-
