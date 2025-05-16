@@ -36,35 +36,23 @@ export default function Login() {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Login</h1>
-      {error && <p className={styles.error}>{error}</p>}
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.inputGroup}>
-          <label htmlFor="email" className={styles.label}>Email:</label>
           <input
             type="email"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={styles.input}
             required
           />
         </div>
-        <div className={styles.inputGroup}>
-          <label htmlFor="password" className={styles.label}>Password:</label>
           <input
             type="password"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className={styles.input}
             required
           />
         </div>
-        <button type="submit" className={styles.button}>Log In</button>
       </form>
-      <p className={styles.registerLink}>
         Don't have an account? <Link to="/register">Sign up here</Link> {/* Use Link from react-router-dom */}
       </p>
     </div>
