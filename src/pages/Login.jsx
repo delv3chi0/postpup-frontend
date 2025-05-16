@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate and Link
-import styles from '../styles/Login.module.css';
 
 export default function Login() {
   const [email, setEmail] = useState('');
