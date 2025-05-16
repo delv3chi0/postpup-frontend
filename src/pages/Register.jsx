@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate and Link
-import styles from '../styles/Login.module.css'; // Reuse or create a new style module
+import { useNavigate, Link } from 'react-router-dom';
+import { Box, Heading, Input, Button, Text } from '@chakra-ui/react';
 
 export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ export default function Register() {
 
       if (response.ok) {
         alert(data.message || 'Registration successful!');
-        navigate('/login'); // Redirect to login page after registration
+        navigate('/login');
       } else {
         setError(data.error || 'Registration failed');
       }
@@ -43,48 +43,37 @@ export default function Register() {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Register</h1>
-      {error && <p className={styles.error}>{error}</p>}
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.inputGroup}>
-          <label htmlFor="email" className={styles.label}>Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={styles.input}
-            required
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label htmlFor="password" className={styles.label}>Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={styles.input}
-            required
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label htmlFor="confirmPassword" className={styles.label}>Confirm Password:</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className={styles.input}
-            required
-          />
-        </div>
-        <button type="submit" className={styles.button}>Register</button>
+    <Box maxWidth="md" borderWidth="1px" borderRadius="md" p={4} mx="auto" mt={8}>
+      <Heading mb={4} textAlign="center">Register</Heading>
+      {error && <Text color="red.500" mb={2}>{error}</Text>}
+      <form onSubmit={handleSubmit}>
+        <Input
+          placeholder="Email"
+          mb={2}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input
+          type="password"
+          placeholder="Password"
+          mb={2}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Input
+          type="password"
+          placeholder="Confirm Password"
+          mb={4}
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <Button colorScheme="blue" width="full" type="submit">Register</Button>
       </form>
-      <p className={styles.registerLink}>
-        Already have an account? <Link to="/login">Log in</Link>
-      </p>
-    </div>
+      <Text mt={2} textAlign="center">
+        Already have an account? <Link color="blue.500" to="/login">Log in</Link>
+      </Text>
+    </Box>
   );
 }
+
+export default Register;

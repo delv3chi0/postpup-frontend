@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate and Link
-import styles from '../styles/Login.module.css';
+import { useNavigate, Link } from 'react-router-dom';
+import { Box, Heading, Input, Button, Text } from '@chakra-ui/react';
 
-export default function Login() {
+function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ export default function Login() {
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        navigate('/dashboard'); // Use navigate for redirection
+        navigate('/dashboard');
       } else {
         setError(data.error || 'Login failed');
       }
@@ -37,37 +37,30 @@ export default function Login() {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Login</h1>
-      {error && <p className={styles.error}>{error}</p>}
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.inputGroup}>
-          <label htmlFor="email" className={styles.label}>Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={styles.input}
-            required
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label htmlFor="password" className={styles.label}>Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={styles.input}
-            required
-          />
-        </div>
-        <button type="submit" className={styles.button}>Log In</button>
+    <Box maxWidth="md" borderWidth="1px" borderRadius="md" p={4} mx="auto" mt={8}>
+      <Heading mb={4} textAlign="center">Login</Heading>
+      {error && <Text color="red.500" mb={2}>{error}</Text>}
+      <form onSubmit={handleSubmit}>
+        <Input
+          placeholder="Email"
+          mb={2}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input
+          type="password"
+          placeholder="Password"
+          mb={4}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button colorScheme="blue" width="full" type="submit">Log In</Button>
       </form>
-      <p className={styles.registerLink}>
-        Don't have an account? <Link to="/register">Sign up here</Link> {/* Use Link from react-router-dom */}
-      </p>
-    </div>
+      <Text mt={2} textAlign="center">
+        Don't have an account? <Link color="blue.500" to="/register">Sign up here</Link>
+      </Text>
+    </Box>
   );
 }
+
+export default Login;
