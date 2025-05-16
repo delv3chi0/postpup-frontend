@@ -1,59 +1,73 @@
 import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate and Link
+import styles from '../styles/Login.module.css';
 
-function Login() {
-  console.log("Login component loaded");
-
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate(); // Initialize navigate
 
-const handleLogin = async () => {
-  console.log('Login button clicked');
-  console.log('Email:', email);
-  console.log('Password:', password);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
 
-  try {
-    const res = await fetch('https://postpup-backend.onrender.com/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      const response = await fetch(`${backendUrl}/api/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await res.json();
-    console.log('Response:', data);
-    alert(data.message || 'Logged in!');
-  } catch (err) {
-    console.error('Login failed:', err);
-    alert('Login error. Check the console.');
-  }
-};
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        navigate('/dashboard'); // Use navigate for redirection
+      } else {
+        setError(data.error || 'Login failed');
+      }
+    } catch (err) {
+      setError('Failed to connect to the server');
+      console.error('Login error:', err);
+    }
+  };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <div className="bg-white p-6 rounded shadow-md w-80">
-        <h2 className="text-xl font-bold mb-4 text-center">Login</h2>
-        <input
-          className="w-full mb-2 p-2 border rounded"
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          className="w-full mb-4 p-2 border rounded"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button
-          onClick={handleLogin}
-          className="w-full bg-indigo-600 text-white p-2 rounded hover:bg-indigo-700"
-        >
-          Log In
-        </button>
-      </div>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Login</h1>
+      {error && <p className={styles.error}>{error}</p>}
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.inputGroup}>
+          <label htmlFor="email" className={styles.label}>Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={styles.input}
+            required
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label htmlFor="password" className={styles.label}>Password:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={styles.input}
+            required
+          />
+        </div>
+        <button type="submit" className={styles.button}>Log In</button>
+      </form>
+      <p className={styles.registerLink}>
+        Don't have an account? <Link to="/register">Sign up here</Link> {/* Use Link from react-router-dom */}
+      </p>
     </div>
   );
 }
-
-export default Login;
