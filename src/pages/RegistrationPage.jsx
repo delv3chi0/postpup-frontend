@@ -76,4 +76,3 @@ export default function Register() {
   );
 }
 
-export default fuction RegistrationPage; // Only one default export at the end
