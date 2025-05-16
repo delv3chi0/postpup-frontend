@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import App from './App'; // Assuming App.jsx is your root component
 import Login from './Login';
-import Register from './pages/Register'; // Corrected capitalization
+import Register from './pages/RegisterPage'; // Corrected capitalization
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
