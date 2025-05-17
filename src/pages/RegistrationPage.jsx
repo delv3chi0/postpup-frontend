@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Box, Heading, Input, Button, Text } from '@chakra-ui/react';
 
 export default function RegistrationPage() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,7 +30,7 @@ export default function RegistrationPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ firstName, lastName, email, password }),
       });
 
       const data = await response.json();
@@ -50,6 +52,18 @@ export default function RegistrationPage() {
       <Heading mb={4} textAlign="center">Register</Heading>
       {error && <Text color="red.500" mb={2}>{error}</Text>}
       <form onSubmit={handleSubmit}>
+        <Input
+          placeholder="First Name"
+          mb={2}
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <Input
+          placeholder="Last Name"
+          mb={2}
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
         <Input
           placeholder="Email"
           mb={2}
