@@ -1,3 +1,4 @@
+console.log('📄 Dashboard component rendering');
 import { Box, Heading, Text, VStack, Divider, Button, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import LogoutButton from '../components/LogoutButton';

@@ -1,3 +1,4 @@
+console.log('📄 Login component rendering');
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Box, Heading, Input, Button, Text } from '@chakra-ui/react';
