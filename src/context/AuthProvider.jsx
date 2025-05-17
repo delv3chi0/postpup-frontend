@@ -1,38 +1,44 @@
-export const AuthContext = createContext();
-import { createContext, useContext, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import { createContext, useContext, useEffect, useState } from 'react';
+import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
+export const AuthContext = createContext();
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
-
-export function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
+  const [token, setToken] = useState(localStorage.getItem('token'));
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const decoded = jwt_decode(token);
-        const isExpired = decoded.exp * 1000 < Date.now();
-        if (isExpired) {
-          localStorage.removeItem('token');
-          navigate('/login');
-        }
-      } catch {
-        localStorage.removeItem('token');
-        navigate('/login');
+    if (!token) return;
+
+    try {
+      const decoded = jwtDecode(token);
+      const exp = decoded.exp * 1000;
+      const timeLeft = exp - Date.now();
+
+      if (timeLeft <= 0) {
+        logout();
+      } else {
+        const timeout = setTimeout(logout, timeLeft);
+        return () => clearTimeout(timeout);
       }
-    } else {
-      navigate('/login');
+    } catch (err) {
+      console.error('JWT decode failed:', err);
+      logout();
     }
-  }, []);
+  }, [token]);
+
+  const logout = () => {
+    setToken(null);
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
 
   return (
-    <AuthContext.Provider value={{}}>
+    <AuthContext.Provider value={{ token, setToken, logout }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
+
+export const useAuth = () => useContext(AuthContext);
