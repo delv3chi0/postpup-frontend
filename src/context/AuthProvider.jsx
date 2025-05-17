@@ -1,42 +1,38 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import jwtDecode from "jwt-decode";
+import { createContext, useContext, useEffect } from 'react';
+import jwt_decode from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem("token"));
+export function useAuth() {
+  return useContext(AuthContext);
+}
+
+export function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
     if (token) {
       try {
-        const decoded = jwtDecode(token);
-        if (decoded.exp * 1000 < Date.now()) {
-          logout();
+        const decoded = jwt_decode(token);
+        const isExpired = decoded.exp * 1000 < Date.now();
+        if (isExpired) {
+          localStorage.removeItem('token');
+          navigate('/login');
         }
       } catch {
-        logout();
+        localStorage.removeItem('token');
+        navigate('/login');
       }
+    } else {
+      navigate('/login');
     }
-  }, [token]);
-
-  const login = (newToken) => {
-    localStorage.setItem("token", newToken);
-    setToken(newToken);
-  };
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-    navigate("/login");
-  };
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ token, login, logout }}>
+    <AuthContext.Provider value={{}}>
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => useContext(AuthContext);
+}
