@@ -1,11 +1,19 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Box, Heading, Input, Button, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Heading,
+  Input,
+  Button,
+  Text,
+  useToast,
+} from '@chakra-ui/react';
 
-function Login() {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const toast = useToast();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -13,7 +21,10 @@ function Login() {
     setError('');
 
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      const backendUrl = import.meta.env.DEV
+        ? 'http://localhost:5000'
+        : 'https://postpup-backend.onrender.com';
+
       const response = await fetch(`${backendUrl}/api/login`, {
         method: 'POST',
         headers: {
@@ -26,7 +37,8 @@ function Login() {
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        navigate('/dashboard');
+        toast({ title: 'Login successful', status: 'success', isClosable: true });
+        navigate('/dashboard'); // Update this route later when dashboard is built
       } else {
         setError(data.error || 'Login failed');
       }
@@ -46,6 +58,7 @@ function Login() {
           mb={2}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
         <Input
           type="password"
@@ -53,14 +66,13 @@ function Login() {
           mb={4}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
         <Button colorScheme="blue" width="full" type="submit">Log In</Button>
       </form>
       <Text mt={2} textAlign="center">
-        Don't have an account? <Link color="blue.500" to="/register">Sign up here</Link>
+        Don’t have an account? <Link to="/register" style={{ color: '#3182ce' }}>Sign up here</Link>
       </Text>
     </Box>
   );
 }
-
-export default Login;
