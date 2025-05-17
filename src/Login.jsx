@@ -6,6 +6,7 @@ import { useAuth } from './context/AuthProvider';
 import jwtDecode from 'jwt-decode';
 
 export default function Login() {
+console.log("🔐 Login page is rendering");
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

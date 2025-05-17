@@ -1,20 +1,17 @@
-import { Routes, Route } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
-import Login from './Login';
-import RegistrationPage from './pages/RegistrationPage';
-import Dashboard from './pages/Dashboard';
+import { ChakraProvider } from "@chakra-ui/react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./Login";
 
-function App() {
-  console.log("✅ App is rendering");
+export default function App() {
+  console.log("🔁 App rendered with Login route only");
+
   return (
     <ChakraProvider>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<RegistrationPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
     </ChakraProvider>
   );
 }
-
-export default App;
