@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import { AuthProvider } from './context/AuthProvider';
 
-console.log("✅ Attempting simple render");
-
-const root = document.getElementById('root');
-if (root) {
-  root.innerHTML = "<h1 style='color:green;text-align:center;'>Static Render Success</h1>";
-} else {
-  console.error("❌ No #root found in index.html");
-}
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </BrowserRouter>
+  </React.StrictMode>
+);

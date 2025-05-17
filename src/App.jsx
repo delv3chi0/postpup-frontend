@@ -1,17 +1,18 @@
+import { Routes, Route } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Login';
+import RegistrationPage from './pages/RegistrationPage';
+import Dashboard from './pages/Dashboard';
 
 function App() {
-  console.log('✅ App component rendering');
-
+  console.log("✅ App is rendering");
   return (
     <ChakraProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
-        </Routes>
-      </Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<RegistrationPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
     </ChakraProvider>
   );
 }
