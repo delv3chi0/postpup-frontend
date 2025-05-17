@@ -16,37 +16,34 @@ export default function Login() {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
 
-    try {
-      const backendUrl = import.meta.env.DEV
-        ? 'http://localhost:5000'
-        : 'https://postpup-backend.onrender.com';
+  try {
+    const backendUrl = import.meta.env.DEV
+      ? 'http://localhost:5000'
+      : 'https://postpup-backend.onrender.com';
 
-      const response = await fetch(`${backendUrl}/api/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+    const response = await fetch(`${backendUrl}/api/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (response.ok) {
-        localStorage.setItem('token', data.token);
-        toast({ title: 'Login successful', status: 'success', isClosable: true });
-        navigate('/dashboard'); // Update this route later when dashboard is built
-      } else {
-        setError(data.error || 'Login failed');
-      }
-    } catch (err) {
-      setError('Failed to connect to the server');
-      console.error('Login error:', err);
+    if (response.ok) {
+      localStorage.setItem('token', data.token);
+      navigate('/dashboard');
+    } else {
+      setError(data.error || 'Login failed');
     }
-  };
+  } catch (err) {
+    setError('Failed to connect to the server');
+    console.error('Login error:', err);
+  }
+};
 
   return (
     <Box maxWidth="md" borderWidth="1px" borderRadius="md" p={4} mx="auto" mt={8}>
